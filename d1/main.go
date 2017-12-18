@@ -11,6 +11,10 @@ var test_4 string = "1111"
 var test_0 string = "1234"
 var test_9 string = "91212129"
 
+// part 2 test vals
+var test_6 string = "1212"
+var test_12 string = "123123"
+
 func main(){
 	
 	var sum int = 0
@@ -18,29 +22,62 @@ func main(){
 	// point to test or input
 	payload := &input
 	
-	// loop over string
-	for i := 0; i < len(*payload); i++ {
-		
-		var cur, nex int
-		
-		// determine current and next numbers
-		cur = int((*payload)[i]) - 48
-		
-		if i != (len(*payload) - 1) {
-			nex = int((*payload)[i+1]) - 48
-		} else {
-			nex = int((*payload)[0]) - 48
+	{	// PART 1
+	
+		// loop over string
+		for i := 0; i < len(*payload); i++ {
+			
+			var cur, nex int
+			
+			// determine current and next numbers
+			cur = int((*payload)[i]) - 48
+			
+			if i != (len(*payload) - 1) {
+				nex = int((*payload)[i+1]) - 48
+			} else {
+				nex = int((*payload)[0]) - 48
+			}
+			
+			fmt.Printf("%d :: %d\n", cur, nex)
+			
+			// compare and increase sum on match
+			if cur == nex {
+				sum += cur
+			}
+			
 		}
 		
-		fmt.Printf("%d :: %d\n", cur, nex)
-		
-		// compare and increase sum on match
-		if cur == nex {
-			sum += cur
-		}
-		
+		fmt.Printf("p1 sum: %d\n", sum)
+	
 	}
 	
-	fmt.Printf("sum: %d\n", sum)
+	sum = 0
 	
+	{	// PART 2
+		
+		half := len(*payload) / 2
+		
+		// loop over string
+		for i := 0; i < len(*payload); i++ {
+			
+			var cur, nex int
+			
+			// determine current and next numbers
+			cur = int((*payload)[i]) - 48
+			
+			// roll over the index if it's larger than the length
+			nex = int((*payload)[(i + half) % len(*payload)]) - 48
+			
+			fmt.Printf("%d :: %d\n", cur, nex)
+			
+			// compare and increase sum on match
+			if cur == nex {
+				sum += cur
+			}
+			
+		}
+		
+		fmt.Printf("p2 sum: %d\n", sum)
+	
+	}
 }
