@@ -62,32 +62,80 @@ func init_test() [][]uint {
 	return test
 }
 
+func init_test2() [][]uint {
+	
+	test := [][]uint{}
+	
+	row0 := []uint{5, 9, 2, 8}
+	row1 := []uint{9, 4, 7, 3}
+	row2 := []uint{3, 8, 6, 5}
+
+	test = append(test, row0)
+	test = append(test, row1)
+	test = append(test, row2)
+
+	return test
+}
+
 func main(){
 	
 	data := [][]uint{}
 	
 	data = init_input()
 	
-	var checksum uint = 0
-	
-	// for rows
-	for i := 0; i < len(data); i++ {
+	{	// PART 1
 		
-		min := data[i][0]
-		max := data[i][0]
+		var checksum uint = 0
 		
-		// for values in row
-		for j := 1; j < len(data[i]); j++ {
+		// for rows
+		for i := 0; i < len(data); i++ {
 			
-			if data[i][j] < min { min = data[i][j] }
-			if data[i][j] > max { max = data[i][j] }
+			min := data[i][0]
+			max := data[i][0]
+			
+			// for values in row
+			for j := 1; j < len(data[i]); j++ {
+				
+				if data[i][j] < min { min = data[i][j] }
+				if data[i][j] > max { max = data[i][j] }
+				
+			}
+			
+			checksum = checksum + (max - min)
 			
 		}
 		
-		checksum = checksum + (max - min)
-		
+		fmt.Printf("p1 checksum: %d\n", checksum)
+	
 	}
 	
-	fmt.Printf("checksum: %d\n", checksum)
+	{	// PART 2
+		
+		var checksum uint = 0
+		
+		// for rows
+		for i := 0; i < len(data); i++ {
+			
+			// for values in row
+			for j := 0; j < len(data[i]); j++ {
+				
+				// check each pair
+				for k := 0; k < len(data[i]); k++ {
+					
+					if k == j { continue } // don't compare to self
+					
+					if data[i][j] % data[i][k] == 0 {
+						checksum += data[i][j] / data[i][k]
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		fmt.Printf("p2 checksum: %d\n", checksum)
+		
+	}
 	
 }
