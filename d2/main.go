@@ -126,6 +126,7 @@ func main(){
 					
 					if data[i][j] % data[i][k] == 0 {
 						checksum += data[i][j] / data[i][k]
+						continue
 					}
 					
 				}
