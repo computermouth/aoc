@@ -4,12 +4,21 @@ package main
 import (
 	"fmt"
 	"strings"
+	"sort"
 )
 
 var test_pw []string = []string { 
 	"aa bb cc dd ee",
 	"aa bb cc dd aa",
 	"aa bb cc dd aaa",
+}
+
+var test_2 []string = []string {
+	"abcde fghij",
+	"abcde xyz ecdab",
+	"a ab abc abd abf abj",
+	"iiii oiii ooii oooi oooo",
+	"oiii ioii iioi iiio",
 }
 
 var data []string = []string {
@@ -528,31 +537,116 @@ var data []string = []string {
 	"qrwu mgnw hvflf ytspp mco ikvbqg fflvh wts cbbf                             ",
 }
 
+type sortBytes []byte
+
+func (b sortBytes) Len() int {
+	return len(b)
+}
+
+func (b sortBytes) Swap(i, j int) {
+	b[i], b[j] = b[j], b[i]
+}
+
+func (b sortBytes) Less(i, j int) bool {
+	return b[i] < b[j]
+}
+
 func main(){
 	
-	valid_pw := 0
-	
-	for i := 0; i < len(data); i++ {
-		m := make(map[string]int)
+	{	// PART 1
 		
-		valid := true
-		phrases := strings.Fields(data[i])
+		valid_pw := 0
 		
-		for j := 0; j < len(phrases); j++ {
+		for i := 0; i < len(data); i++ {
+			m := make(map[string]int)
 			
-			if m[phrases[j]] == 0 {
-				m[phrases[j]] = 1
-			} else {
-				valid = false
-				break
+			valid := true
+			phrases := strings.Fields(data[i])
+			
+			for j := 0; j < len(phrases); j++ {
+				
+				// if unique, register; else invalidate
+				if m[phrases[j]] == 0 {
+					m[phrases[j]] = 1
+				} else {
+					valid = false
+					break
+				}
+				
 			}
+			
+			if valid == true { valid_pw++; valid = false }
 			
 		}
 		
-		if valid == true { valid_pw++; valid = false }
-		
+		fmt.Printf("P1: %d valid passphrases\n\n", valid_pw )
+	
 	}
 	
-	fmt.Printf("%d valid passphrases", valid_pw )
+	{ // PART 2
+		
+		valid_pw := 0
+		
+		for i := 0; i < len(data); i++ {
+			m := make(map[string]int)
+			
+			valid := true
+			phrases := strings.Fields(data[i])
+			
+			for j := 0; j < len(phrases); j++ {
+				
+				// if unique, register; else invalidate
+				if m[phrases[j]] == 0 {
+					m[phrases[j]] = 1
+				} else {
+					valid = false
+					break
+				}
+				
+			}
+			
+			// loop over each word
+			for j := 0; j < len(phrases); j++ {
+				
+				anagramFound := false
+				
+				// for each word, check neighbors for anagrams 
+				for k := 0; k < len(phrases); k++ {
+					
+					foundUnique := false
+					
+					if j == k { continue } // don't compare to self
+					
+					// anagrams won't have differing length
+					if len(phrases[j]) != len(phrases[k]) { 
+						foundUnique = true
+					} else {
+						// sort characters alphabetically and compare
+						tmp_j := []byte(phrases[j])
+						tmp_k := []byte(phrases[k])
+						
+						sort.Sort(sortBytes(tmp_j))
+						sort.Sort(sortBytes(tmp_k))
+						
+						if string(tmp_j) != string(tmp_k) {
+							foundUnique = true
+						}
+					}
+					
+					// no unique characters found in word
+					if foundUnique == false { anagramFound = true; break }
+					
+				}
+				
+				if anagramFound == true { valid = false }
+			}
+			
+			if valid == true { valid_pw++; valid = false }
+			
+		}
+		
+		fmt.Printf("P2: %d valid passphrases", valid_pw )
+		
+	}
 	
 }
