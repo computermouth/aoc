@@ -38,7 +38,11 @@ func main() {
 		
 	}
 	
-	fmt.Println(inputInts)
+	fmt.Println(inputInts, "\n")
+	copyInputInts := make([]int, len(inputInts))
+	copy(copyInputInts, inputInts)
+	
+	// PART 1
 	
 	iterations := 0
 	
@@ -50,11 +54,30 @@ func main() {
 		
 		iterations++
 		
-		//~ fmt.Println(inputInts)
-		//~ fmt.Println("  i: ", i)
+	}
+	
+	fmt.Println("P1 iterations: ", iterations)
+	
+	// PART 2
+	
+	inputInts = copyInputInts
+	iterations = 0
+	
+	for i := 0; i >=0 && i < len(inputInts); {
+		
+		jump := inputInts[i]
+		if jump > 2 {
+			inputInts[i]--
+		} else {
+			inputInts[i]++
+		}
+		
+		i += jump
+		
+		iterations++
 		
 	}
 	
-	fmt.Println("iterations: ", iterations)
+	fmt.Println("P2 iterations: ", iterations)
 	
 }
