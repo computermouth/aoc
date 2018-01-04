@@ -28,13 +28,18 @@ char input[] =
 "1165	1119	194	280	223	1181	267	898	1108	124	618	1135	817	997	129	227\n"
 "404	1757	358	2293	2626	87	613	95	1658	147	75	930	2394	2349	86	385\n";
 
+char test1[] =
+"5	9	2	8\n"
+"9	4	7	3\n"
+"3	8	6	5\n";
+
 typedef struct {
 	short **table;
 	size_t rows;
 	size_t *columns;
 } payload;
 
-int process(payload p){
+int process_p1(payload p){
 	
 	int checksum = 0;
 	
@@ -52,6 +57,30 @@ int process(payload p){
 		}
 		
 		checksum += max - min;
+	}
+	
+	return checksum;
+}
+
+int process_p2(payload p){
+	
+	int checksum = 0;
+	
+	for(int i = 0; i < p.rows; i++){
+		
+		for(int j = 0; j < p.columns[i]; j++){
+			
+			for(int k = 0; k < p.columns[i]; k++){
+				if(j == k)
+					continue;
+				
+				if( p.table[i][j] % p.table[i][k] == 0 ) {
+						checksum += p.table[i][j] / p.table[i][k];
+						break;
+				}
+			}
+			
+		}
 	}
 	
 	return checksum;
@@ -124,13 +153,30 @@ void destroy_p(payload p){
 
 int main(){
 	
+		
+	char *input_copy;
+	input_copy = strdup(input); // strtok is destructive
+	
 	payload p0 = init_p(test0, strlen(test0));
-	printf("chk: %d\n\n", process(p0));
+	printf("chk: %d\n\n", process_p1(p0));
 	destroy_p(p0);
 	
-	payload p1 = init_p(input, strlen(input));
-	printf("chk: %d\n\n", process(p1));
+	payload p1 = init_p(input_copy, strlen(input_copy));
+	printf("chk: %d\n\n", process_p1(p1));
 	destroy_p(p1);
+	
+	payload p2 = init_p(test1, strlen(test1));
+	printf("chk: %d\n\n", process_p2(p2));
+	destroy_p(p2);
+	
+	free(input_copy);
+	input_copy = strdup(input);
+	
+	payload p3 = init_p(input_copy, strlen(input_copy));
+	printf("chk: %d\n\n", process_p2(p3));
+	destroy_p(p3);
+	
+	free(input_copy);
 	
 	return 0;
 }
