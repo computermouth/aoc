@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <string.h>
 
 char test0[] = "1122";
 char test1[] = "1111";
@@ -20,9 +21,9 @@ int process_p1(char *input, size_t len){
 	
 	printf("input: %s\nlen: %lu\n", input, len);
 	
-	for(int i = 0; i < len - 1; i++){
+	for(int i = 0; i < len ; i++){
 		
-		if(i == len - 2 && input[i] == input[0]){
+		if(i == len - 1 && input[i] == input[0]){
 			value += input[0] - '0';
 		} else if(input[i] == input[i+1]) {
 			value += input[i] - '0';
@@ -36,13 +37,13 @@ int process_p1(char *input, size_t len){
 int process_p2(char *input, size_t len){
 	
 	int value = 0;
-	int half = (len - 1) / 2;
+	int half = len / 2;
 	
 	printf("input: %s\nlen: %lu\n", input, len);
 	
-	for(int i = 0; i < len - 1; i++){
+	for(int i = 0; i < len; i++){
 		
-		if(input[i] == input[(i + half) % (len - 1)]) {
+		if(input[i] == input[(i + half) % len]) {
 			value += input[i] - '0';
 		}
 		
@@ -54,21 +55,21 @@ int process_p2(char *input, size_t len){
 int main(){
 	
 	// PART 1
-	printf("test0: %d\n\n", process_p1(test0, sizeof(test0)/sizeof(test0[0])));
-	printf("test1: %d\n\n", process_p1(test1, sizeof(test1)/sizeof(test1[0])));
-	printf("test2: %d\n\n", process_p1(test2, sizeof(test2)/sizeof(test2[0])));
-	printf("test3: %d\n\n", process_p1(test3, sizeof(test3)/sizeof(test3[0])));
+	printf("test0: %d\n\n", process_p1(test0, strlen(test0)));
+	printf("test1: %d\n\n", process_p1(test1, strlen(test1)));
+	printf("test2: %d\n\n", process_p1(test2, strlen(test2)));
+	printf("test3: %d\n\n", process_p1(test3, strlen(test3)));
 	
-	printf("input_p1: %d\n\n", process_p1(input, sizeof(input)/sizeof(input[0])));
+	printf("input_p1: %d\n\n", process_p1(input, strlen(input)));
 	
 	// PART 2
-	printf("test4: %d\n\n", process_p2(test4, sizeof(test4)/sizeof(test4[0])));
-	printf("test5: %d\n\n", process_p2(test5, sizeof(test5)/sizeof(test5[0])));
-	printf("test6: %d\n\n", process_p2(test6, sizeof(test6)/sizeof(test6[0])));
-	printf("test7: %d\n\n", process_p2(test7, sizeof(test7)/sizeof(test7[0])));
-	printf("test8: %d\n\n", process_p2(test8, sizeof(test8)/sizeof(test8[0])));
+	printf("test4: %d\n\n", process_p2(test4, strlen(test4)));
+	printf("test5: %d\n\n", process_p2(test5, strlen(test5)));
+	printf("test6: %d\n\n", process_p2(test6, strlen(test6)));
+	printf("test7: %d\n\n", process_p2(test7, strlen(test7)));
+	printf("test8: %d\n\n", process_p2(test8, strlen(test8)));
 	
-	printf("input_p1: %d\n\n", process_p2(input, sizeof(input)/sizeof(input[0])));
+	printf("input_p1: %d\n\n", process_p2(input, strlen(input)));
 	
 	return 0;
 }
